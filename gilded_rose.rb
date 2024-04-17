@@ -5,25 +5,33 @@ class GildedRose
   end
 
   def update_aged_brie(item)
-    item.quality = item.quality + 1 if item.quality < 50
-    item.sell_in = item.sell_in - 1 if item.name != "Sulfuras, Hand of Ragnaros"
-    item.quality = item.quality + 1 if item.sell_in < 0 && item.quality < 50
+    increase_quality(item)
+    decrease_sell_in(item)
+    increase_quality(item) if item.sell_in < 0
   end
 
   def update_backstage_passes(item)
-    item.quality = item.quality + 1 if item.quality < 50
-    item.quality = item.quality + 1 if item.sell_in < 11 && item.quality < 50
-    item.quality = item.quality + 1 if item.sell_in < 6 && item.quality < 50
-    item.sell_in = item.sell_in - 1 if item.name != "Sulfuras, Hand of Ragnaros"
+    increase_quality(item)
+    increase_quality(item) if item.sell_in < 11
+    increase_quality(item) if item.sell_in < 6
+    item.sell_in -= 1 if item.name != "Sulfuras, Hand of Ragnaros"
     item.quality = 0 if item.sell_in < 0
   end
 
   def update_normal_item(item)
-    item.quality = item.quality - 1 if item.quality > 0 && item.name != "Sulfuras, Hand of Ragnaros"
-    item.sell_in = item.sell_in - 1 if item.name != "Sulfuras, Hand of Ragnaros"
+    item.quality -= 1 if item.quality > 0 && item.name != "Sulfuras, Hand of Ragnaros"
+    item.sell_in -= 1 if item.name != "Sulfuras, Hand of Ragnaros"
     if item.sell_in < 0
-      item.quality = item.quality - 1 if item.quality > 0 && item.name != "Sulfuras, Hand of Ragnaros"
+      item.quality -= 1 if item.quality > 0 && item.name != "Sulfuras, Hand of Ragnaros"
     end
+  end
+
+  def increase_quality(item)
+    item.quality += 1 if item.quality < 50
+  end
+
+  def decrease_sell_in(item)
+    item.sell_in -= 1 if item.name != "Sulfuras, Hand of Ragnaros"
   end
 
   def update_quality()
