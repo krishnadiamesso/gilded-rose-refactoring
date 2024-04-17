@@ -14,13 +14,13 @@ class GildedRose
     increase_quality(item)
     increase_quality(item) if item.sell_in < 11
     increase_quality(item) if item.sell_in < 6
-    item.sell_in -= 1 if item.name != "Sulfuras, Hand of Ragnaros"
-    item.quality = 0 if item.sell_in < 0
+    decrease_sell_in(item)
+    quality_zero(item) if item.sell_in < 0
   end
 
   def update_normal_item(item)
     item.quality -= 1 if item.quality > 0 && item.name != "Sulfuras, Hand of Ragnaros"
-    item.sell_in -= 1 if item.name != "Sulfuras, Hand of Ragnaros"
+    decrease_sell_in(item)
     if item.sell_in < 0
       item.quality -= 1 if item.quality > 0 && item.name != "Sulfuras, Hand of Ragnaros"
     end
@@ -32,6 +32,10 @@ class GildedRose
 
   def decrease_sell_in(item)
     item.sell_in -= 1 if item.name != "Sulfuras, Hand of Ragnaros"
+  end
+
+  def quality_zero(item)
+    item.quality = 0
   end
 
   def update_quality()
