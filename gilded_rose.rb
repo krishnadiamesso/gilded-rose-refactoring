@@ -4,30 +4,35 @@ class GildedRose
     @items = items
   end
 
+  MAXIMUM_QUALITY = 50
+  MINIMUM_QUALITY = 0
+
   def update_aged_brie(item)
-    increase_quality(item)
+    quality_increase(item)
     decrease_sell_in(item)
-    increase_quality(item) if item.sell_in < 0
+    quality_increase(item) if item.sell_in.negative?
   end
 
   def update_backstage_passes(item)
-    increase_quality(item)
-    increase_quality(item) if item.sell_in < 11
-    increase_quality(item) if item.sell_in < 6
+    quality_increase(item)
+    quality_increase(item) if item.sell_in < 11
+    quality_increase(item) if item.sell_in < 6
     decrease_sell_in(item)
-    quality_zero(item) if item.sell_in < 0
+    quality_zero(item) if item.sell_in.negative?
   end
 
   def update_normal_item(item)
-    item.quality -= 1 if item.quality > 0 && item.name != "Sulfuras, Hand of Ragnaros"
+    quality_degrade(item)
     decrease_sell_in(item)
-    if item.sell_in < 0
-      item.quality -= 1 if item.quality > 0 && item.name != "Sulfuras, Hand of Ragnaros"
-    end
+    quality_degrade(item) if item.sell_in.negative?
   end
 
-  def increase_quality(item)
-    item.quality += 1 if item.quality < 50
+  def quality_increase(item)
+    item.quality += 1 if item.quality < MAXIMUM_QUALITY
+  end
+
+  def quality_degrade(item)
+    item.quality -= 1 if item.quality.positive? && item.name != "Sulfuras, Hand of Ragnaros"
   end
 
   def decrease_sell_in(item)
