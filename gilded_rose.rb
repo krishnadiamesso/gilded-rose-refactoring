@@ -7,6 +7,22 @@ class GildedRose
   MAXIMUM_QUALITY = 50
   MINIMUM_QUALITY = 0
 
+  def update_quality
+    @items.each do |item|
+
+      case item.name
+      when 'Aged Brie'
+        update_aged_brie(item)
+      when 'Backstage passes to a TAFKAL80ETC concert'
+        update_backstage_passes(item)
+      else
+        update_normal_item(item)
+      end
+    end
+  end
+
+  private
+
   def update_aged_brie(item)
     quality_increase(item)
     decrease_sell_in(item)
@@ -32,29 +48,15 @@ class GildedRose
   end
 
   def quality_degrade(item)
-    item.quality -= 1 if item.quality.positive? && item.name != "Sulfuras, Hand of Ragnaros"
+    item.quality -= 1 if item.quality.positive? && item.name != 'Sulfuras, Hand of Ragnaros'
   end
 
   def decrease_sell_in(item)
-    item.sell_in -= 1 if item.name != "Sulfuras, Hand of Ragnaros"
+    item.sell_in -= 1 if item.name != 'Sulfuras, Hand of Ragnaros'
   end
 
   def quality_zero(item)
     item.quality = 0
-  end
-
-  def update_quality()
-    @items.each do |item|
-
-      case item.name
-      when "Aged Brie"
-        update_aged_brie(item)
-      when "Backstage passes to a TAFKAL80ETC concert"
-        update_backstage_passes(item)
-      else
-        update_normal_item(item)
-      end
-    end
   end
 end
 
